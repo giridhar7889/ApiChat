@@ -1,24 +1,17 @@
 import json
 
 from api_chat._abstractchat import _AbstractChat
-from api_chat._common import (
-    requests,  # patched
-    _START_INTERESTS_URL,
-    _validate_status_code,
-    _check_interests_type,
-)
+from api_chat._common import requests, _START_URL, _validate_status_code  # patched
 from api_chat.chatevents import ChatEvent
 from api_chat.exceptions import apichatException
 
 
-class InterestsChat(_AbstractChat):
-    """Represents a chat with a partner with common interests."""
+class RandomChat(_AbstractChat):
+    """Represents a chat with a random partner ."""
 
-    def __init__(self, interests, language="en"):
+    def __init__(self, language="en"):
         """Constructor.
         Arguments:
-            - interests (list): A list of interests. The elements must
-              be strings.
             - language = "en" (str): The language in which to converse.
               This must be a language code defined in ISO 639-1. The
               languages Cebuano (ceb) and Filipino (fil) are also
@@ -29,12 +22,10 @@ class InterestsChat(_AbstractChat):
             - No return value.
         """
         super().__init__(language=language)
-        self.interests = interests
 
     def start(self):
         """Start looking for a partner.
-        Ask the server to start looking for a partner with common
-        interests. Ideally, the server returns a client ID. If the
+        Ask the server to start looking for a random partner. Ideally, the server returns a client ID. If the
         client ID is obtained successfully, add initial events to the
         event queue and return.
         Raise:
@@ -47,10 +38,9 @@ class InterestsChat(_AbstractChat):
         """
         response = requests.get(
             self._server_url
-            + _START_INTERESTS_URL.format(
+            + _START_URL.format(
                 self._random_id,  # randid
                 self.language,  # lang
-                json.dumps(self.interests),  # topics
             )
         )
 
@@ -80,10 +70,7 @@ class InterestsChat(_AbstractChat):
 
             if event_type == "connected":
                 self._chat_ready_flag = True
-                for event_ in events_json:
-                    if event_[0] == "commonLikes":
-                        common_interests = event_[1]
-                self._events.put((ChatEvent.CHAT_READY, common_interests))
+                self._events.put((ChatEvent.CHAT_READY, None))
 
             elif event_type == "waiting":
                 self._events.put((ChatEvent.CHAT_WAITING, None))
@@ -125,26 +112,3 @@ class InterestsChat(_AbstractChat):
 
             elif event_type == "recaptchaRequired":
                 raise apichatException("ReCAPTCHA check required.")
-
-    @property
-    def interests(self):
-        return self._interests
-
-    @interests.setter
-    def interests(self, interests):
-        _check_interests_type(interests=interests)
-        self._interests = interests
-
-    def __repr__(self):
-        return 'InterestsChat(interests={}, language="{}")'.format(
-            self.interests, self.language
-        )
-
-    def __str__(self):
-        # I'll regret this later...
-        connected = "yes" if self._chat_ready_flag else "no"
-        return (
-            "Interests-based chat (interests: {}, language: {}, connected: {})".format(
-                self.interests, self.language, connected
-            )
-        )
