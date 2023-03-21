@@ -6,7 +6,7 @@ from api_chat.chatevents import ChatEvent
 from api_chat.exceptions import apichatException
 
 
-class InterestsChat(_AbstractChat):
+class Threesome(_AbstractChat):
     """Represents a chat with a partner with common interests."""
 
     def __init__(self, language="en"):
