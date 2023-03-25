@@ -1,9 +1,9 @@
 import json
 
-from api_chat._abstractchat import _AbstractChat
-from api_chat._common import requests, _START_SPY_URL, _validate_status_code  # patched
-from api_chat.chatevents import ChatEvent
-from api_chat.exceptions import apichatException
+from _abstractchat import _AbstractChat
+from _common import requests, _START_SPY_URL, _validate_status_code  # patched
+from chatevents import ChatEvent
+from exceptions import apichatException
 
 
 class Threesome(_AbstractChat):

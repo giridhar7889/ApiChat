@@ -2,7 +2,7 @@ import random
 
 import requests
 
-from api_chat.exceptions import apichatException
+from exceptions import apichatException
 
 _SERVER_POOL = tuple("https://front{}.apichat.com".format(n) for n in range(1, 33))
 

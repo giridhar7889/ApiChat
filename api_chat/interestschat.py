@@ -1,14 +1,14 @@
 import json
 
-from api_chat._abstractchat import _AbstractChat
-from api_chat._common import (
+from _abstractchat import _AbstractChat
+from _common import (
     requests,  # patched
     _START_INTERESTS_URL,
     _validate_status_code,
     _check_interests_type,
 )
-from api_chat.chatevents import ChatEvent
-from api_chat.exceptions import apichatException
+from chatevents import ChatEvent
+from exceptions import apichatException
 
 
 class InterestsChat(_AbstractChat):

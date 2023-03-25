@@ -3,7 +3,7 @@ import json
 import queue
 import random
 
-from api_chat._common import (
+from _common import (
     requests,  # patched
     _SERVER_POOL,
     _generate_random_id_string,
