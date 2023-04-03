@@ -1,8 +1,12 @@
+import os
 import sys
 
-sys.path.insert(0, "../")
 
-from api_chat.chatevents import ChatEvent
+# adding api_chat to the system path
+sys.path.insert(1, r"C:\Users\girid\OneDrive\Desktop\Omegle\api_chat")
+print(sys.path[1])
+import chatevents
+from chatevents import ChatEvent
 
 
 def make_events_json(*events):
